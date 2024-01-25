@@ -52,16 +52,6 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public Job importUserJob(JobRepository jobRepository, JobCompletionNotificationListener listener, Step step) {
-        return new JobBuilder("importUserJob", jobRepository)
-                .incrementer(new RunIdIncrementer())
-                .listener(listener)
-                .flow(step)
-                .end()
-                .build();
-    }
-
-    @Bean
     public Step step1(JobRepository jobRepository, PlatformTransactionManager transactionManager, JdbcBatchItemWriter<Comment> writer) {
         return new StepBuilder("step1", jobRepository)
                 .<Comment, Comment> chunk(10, transactionManager)
