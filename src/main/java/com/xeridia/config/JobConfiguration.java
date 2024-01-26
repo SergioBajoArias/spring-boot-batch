@@ -13,8 +13,8 @@ import org.springframework.context.annotation.Configuration;
 public class JobConfiguration {
 
     @Bean
-    public Job importUserJob(JobRepository jobRepository, JobCompletionNotificationListener listener, Step step) {
-        return new JobBuilder("importUserJob", jobRepository)
+    public Job importCommentJob(JobRepository jobRepository, JobCompletionNotificationListener listener, Step step) {
+        return new JobBuilder("importCommentJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
                 .flow(step)

@@ -2,6 +2,7 @@ package com.xeridia;
 
 import com.xeridia.config.JobConfiguration;
 import com.xeridia.listener.JobCompletionNotificationListener;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import org.springframework.test.annotation.DirtiesContext;
 @DirtiesContext
 @SpringBootTest
 @EnableAutoConfiguration
+@Slf4j
 public class SpringBootBatchIntegrationTest {
 
     @Autowired
@@ -52,7 +54,7 @@ public class SpringBootBatchIntegrationTest {
 
     @Test
     public void givenCommentList_whenJobExecuted_thenSuccess() throws Exception {
-        jobLauncherTestUtils.setJob(new JobBuilder("importUserJob", jobRepository)
+        jobLauncherTestUtils.setJob(new JobBuilder("importCommentJob", jobRepository)
                 .incrementer(new RunIdIncrementer())
                 .listener(listener)
                 .flow(step)
@@ -63,7 +65,7 @@ public class SpringBootBatchIntegrationTest {
         JobInstance jobInstance = jobExecution.getJobInstance();
         ExitStatus jobExitStatus = jobExecution.getExitStatus();
 
-        Assertions.assertEquals("importUserJob", jobInstance.getJobName());
+        Assertions.assertEquals("importCommentJob", jobInstance.getJobName());
         Assertions.assertEquals("COMPLETED", jobExitStatus.getExitCode());
     }
 

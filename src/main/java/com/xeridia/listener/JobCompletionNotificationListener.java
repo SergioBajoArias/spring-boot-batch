@@ -20,18 +20,12 @@ public class JobCompletionNotificationListener implements JobExecutionListener {
     }
 
     @Override
-    public void afterJob(JobExecution jobExecution) {
-        if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
-            log.info("!!! JOB FINISHED! Time to verify the results");
+    public void beforeJob(JobExecution jobExecution) {
+        log.info("Let's start the job '{}'", jobExecution.getJobInstance().getJobName());
+    }
 
-            String query = "SELECT id, postId, name, email, body FROM comment";
-            jdbcTemplate.query(query, (rs, row) -> new Comment(
-                        rs.getLong(1),
-                        rs.getLong(2),
-                        rs.getString(3),
-                        rs.getString(4),
-                        rs.getString(5)))
-                    .forEach(comment -> log.info("Found < {} > in the database.", comment));
-        }
+    @Override
+    public void afterJob(JobExecution jobExecution) {
+        log.info("Job finished with status {}", jobExecution.getStatus());
     }
 }
